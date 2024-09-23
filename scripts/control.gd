@@ -44,15 +44,18 @@ func add_project(projectPath: String, editor_versions: Dictionary) -> void:
 	var fileContents = get_godot_project_config(projectPath)
 	var name = extract_project_name(fileContents)
 	var version = extract_version_number(fileContents)
-
+	
+	if (version == "Unknown"):
+		projectEntry.buttonDisabled = true;
+	
 	projectEntry.nameText = name
 	projectEntry.pathText = projectPath
 	projectEntry.versionText = version
-
+	
 	# Set the executable path for the project entry
 	var executable_path = get_editor_path(version, editor_versions)
 	projectEntry.executablePath = executable_path
-
+	
 	v_project_container.add_child(projectEntry)
 
 func get_godot_editor_folder() -> String:
@@ -94,7 +97,7 @@ func is_godot_executable(file_name: String) -> bool:
 func process_godot_executable(parent_dir: String, file_name: String, editor_versions: Dictionary) -> Dictionary:
 	var version = get_godot_version(file_name)
 	var version_key = version.split("-")[0]  # Extract the version number without the suffix
-
+	
 	if not editor_versions.has(version_key):
 		editor_versions[version_key] = {}
 
@@ -113,7 +116,7 @@ func get_godot_version(file_name: String) -> String:
 	if match:
 		return match.get_string(1)  # Extract the version number without "v" and "-"
 	else:
-		return "Unknown Version"
+		return "Unknown"
 
 func get_editor_path(version: String, editor_versions: Dictionary) -> String:
 	if editor_versions.has(version):
@@ -135,7 +138,7 @@ func extract_version_number(config_contents: String) -> String:
 	if match:
 		return match.get_string(1)
 	else:
-		return "Unknown Version"
+		return "Unknown"
 
 func extract_project_name(config_contents: String) -> String:
 	var name_regex = RegEx.new()
