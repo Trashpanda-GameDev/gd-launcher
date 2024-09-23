@@ -35,7 +35,10 @@ func populate_available_versions_list() -> Dictionary:
 func populate_project_list(editor_versions: Dictionary) -> void:
 	var contents = get_godot_projects_file_contents()
 	var projectPaths = parse_project_paths(contents)
-
+	
+	# reverse the project paths array because the config file has the last most recent project on the last entry 
+	projectPaths.reverse()
+	
 	for projectPath in projectPaths:
 		add_project(projectPath, editor_versions)
 
