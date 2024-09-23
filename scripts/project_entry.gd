@@ -7,8 +7,9 @@ extends HBoxContainer
 
 @export var nameText = ""
 @export var pathText = ""
-@export var versionText = "";
+@export var versionText = ""
 @export var executablePath = ""
+@export var buttonDisabled = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -18,12 +19,13 @@ func _ready() -> void:
 	print(path_label.text)
 	print(version_label.text)
 	print(launch_button.text)
+	launch_button.disabled = buttonDisabled
 	
 	launch_button.button_down.connect(_on_launch_button_pressed)
 
 func _on_launch_button_pressed() -> void:
 	launch(pathText)
-	print(Globals.closeOnLaunch)
+	print("button Pressed", Globals.closeOnLaunch)
 	if(Globals.closeOnLaunch):
 		get_tree().quit();
 

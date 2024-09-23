@@ -2,11 +2,21 @@
 
 [ext_resource type="Script" path="res://scripts/control.gd" id="1_im4cd"]
 [ext_resource type="PackedScene" uid="uid://bt3p8vag86r3i" path="res://scenes/ProjectEntry.tscn" id="1_onqvf"]
-[ext_resource type="Script" path="res://scripts/close_on_launch_button.gd" id="3_t4g75"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_5rddj"]
 line_spacing = 0.0
 font_size = 51
+
+[sub_resource type="GDScript" id="GDScript_jcjqw"]
+script/source = "extends CheckButton
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	toggled.connect(_onToggled)
+
+func _onToggled(event):
+	Globals.closeOnLaunch = event
+"
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -113,4 +123,4 @@ offset_left = -168.0
 offset_bottom = 31.0
 grow_horizontal = 0
 text = "close on launch"
-script = ExtResource("3_t4g75")
+script = SubResource("GDScript_jcjqw")
