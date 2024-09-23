@@ -22,14 +22,16 @@ func populate_available_versions_list() -> Dictionary:
 		var console = version_info.get("console", "")
 		var label_text = version_key
 		if core != "":
+			print(version_key + "[core]: ", core)
 			label_text += " [core]"
 		if console != "":
+			print(version_key + "[console]: ", console)
 			label_text += " [console]"
 		var label = Label.new()
 		label.text = label_text
 		v_available_versions_container.add_child(label)
-
-	print(editor_versions)
+		
+		
 	return editor_versions
 
 func populate_project_list(editor_versions: Dictionary) -> void:
