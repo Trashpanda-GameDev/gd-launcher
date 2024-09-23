@@ -64,6 +64,11 @@ func add_project(projectPath: String, editor_versions: Dictionary) -> void:
 	v_project_container.add_child(projectEntry)
 
 func get_godot_editor_folder() -> String:
+	# check if selected folder is saved
+	# if not ask for folder to check
+	
+	# let the user select a root folder
+	# save the selected root folder
 	var executable_path = OS.get_executable_path()
 	var executable_dir = executable_path.get_base_dir()
 	var parent_dir = executable_dir.get_base_dir()
