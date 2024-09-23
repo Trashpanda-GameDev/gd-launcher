@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/control.gd" id="1_im4cd"]
 [ext_resource type="PackedScene" uid="uid://bt3p8vag86r3i" path="res://scenes/ProjectEntry.tscn" id="1_onqvf"]
-[ext_resource type="Script" path="res://scenes/close_on_launch_button.gd" id="3_t4g75"]
+[ext_resource type="Script" path="res://scripts/close_on_launch_button.gd" id="3_t4g75"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_5rddj"]
 line_spacing = 0.0
