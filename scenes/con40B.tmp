@@ -1,0 +1,54 @@
+[gd_scene load_steps=3 format=3 uid="uid://b6oxhj62t4x63"]
+
+[ext_resource type="Script" path="res://scenes/control.gd" id="1_im4cd"]
+[ext_resource type="PackedScene" uid="uid://bt3p8vag86r3i" path="res://scenes/ProjectEntry.tscn" id="1_onqvf"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_im4cd")
+projectNode = ExtResource("1_onqvf")
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.02
+anchor_top = 0.15
+anchor_right = 0.7
+anchor_bottom = 0.9
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Path"
+
+[node name="Label2" type="Label" parent="VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+text = "Version"
+
+[node name="Label3" type="Label" parent="VBoxContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(74.13, 0)
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VProjectContainer" type="VBoxContainer" parent="VBoxContainer2/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" parent="VBoxContainer2/ScrollContainer/VProjectContainer" instance=ExtResource("1_onqvf")]
+layout_mode = 2

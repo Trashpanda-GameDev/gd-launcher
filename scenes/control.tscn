@@ -1,0 +1,116 @@
+[gd_scene load_steps=5 format=3 uid="uid://b6oxhj62t4x63"]
+
+[ext_resource type="Script" path="res://scripts/control.gd" id="1_im4cd"]
+[ext_resource type="PackedScene" uid="uid://bt3p8vag86r3i" path="res://scenes/ProjectEntry.tscn" id="1_onqvf"]
+[ext_resource type="Script" path="res://scenes/close_on_launch_button.gd" id="3_t4g75"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_5rddj"]
+line_spacing = 0.0
+font_size = 51
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_im4cd")
+projectNode = ExtResource("1_onqvf")
+
+[node name="ProjectTitle" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -133.5
+offset_right = 133.5
+offset_bottom = 70.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+text = "GD Launcher"
+label_settings = SubResource("LabelSettings_5rddj")
+
+[node name="ProjectsParent" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.02
+anchor_top = 0.15
+anchor_right = 0.8
+anchor_bottom = 0.9
+offset_left = -0.039999
+offset_top = -0.200005
+offset_bottom = -0.200012
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ProjectsParent"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ProjectsParent/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Path"
+
+[node name="Label2" type="Label" parent="ProjectsParent/HBoxContainer"]
+layout_mode = 2
+text = "Version"
+
+[node name="Label3" type="Label" parent="ProjectsParent/HBoxContainer"]
+custom_minimum_size = Vector2(74.13, 0)
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="ProjectsParent"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VProjectContainer" type="VBoxContainer" parent="ProjectsParent/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" parent="ProjectsParent/ScrollContainer/VProjectContainer" instance=ExtResource("1_onqvf")]
+visible = false
+layout_mode = 2
+
+[node name="AvailableVersionsContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.82
+anchor_top = 0.15
+anchor_right = 0.98
+anchor_bottom = 0.9
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="AvailableVersionsContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="AvailableVersionsContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Available Versions"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="AvailableVersionsContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VAvailableVersionsContainer" type="VBoxContainer" parent="AvailableVersionsContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="CheckButton" type="CheckButton" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -168.0
+offset_bottom = 31.0
+grow_horizontal = 0
+text = "close on launch"
+script = ExtResource("3_t4g75")

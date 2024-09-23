@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=3 uid="uid://bt3p8vag86r3i"]
+
+[ext_resource type="Script" path="res://scripts/project_entry.gd" id="1_cffqj"]
+
+[node name="HBoxContainer" type="HBoxContainer"]
+script = ExtResource("1_cffqj")
+
+[node name="NameLabel" type="Label" parent="."]
+modulate = Color(1, 0.180392, 1, 1)
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_vertical = 1
+text = "SpeedySaucer"
+
+[node name="PathLabel" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Path"
+
+[node name="VersionLabel" type="Label" parent="."]
+layout_mode = 2
+text = "4.2.1"
+
+[node name="LaunchButton" type="Button" parent="."]
+layout_mode = 2
+text = "Launch"

@@ -1,1 +1,1 @@
-# godot-hub
+# GD Launcher
