@@ -16,9 +16,10 @@ func _ready() -> void:
 	path_label.text = pathText
 	version_label.text = versionText
 	name_label.text = nameText
-	print(path_label.text)
-	print(version_label.text)
-	print(launch_button.text)
+	var buttonState = "enabled"
+	if(buttonDisabled):
+		buttonState = "disabled"
+	print(version_label.text +" "+ path_label.text + " Button ["+ buttonState +"]" )
 	launch_button.disabled = buttonDisabled
 	
 	launch_button.button_down.connect(_on_launch_button_pressed)

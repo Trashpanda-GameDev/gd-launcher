@@ -6,7 +6,7 @@
 script = ExtResource("1_cffqj")
 
 [node name="NameLabel" type="Label" parent="."]
-modulate = Color(1, 0.180392, 1, 1)
+modulate = Color(0.439216, 0.729412, 0.980392, 1)
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_vertical = 1

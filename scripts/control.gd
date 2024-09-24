@@ -2,19 +2,43 @@ extends Control
 
 @onready var v_available_versions_container: VBoxContainer = $AvailableVersionsContainer/ScrollContainer/VAvailableVersionsContainer
 @onready var v_project_container: VBoxContainer = $ProjectsParent/ScrollContainer/VProjectContainer
+@onready var file_dialog: FileDialog = $FileDialog
 
 @export var projectNode: PackedScene
+@onready var select_root_folder_button: Button = $AvailableVersionsContainer/SelectRootFolderButton
+@onready var selected_folder_label: Label = $AvailableVersionsContainer/SelectedFolderLabel
+
+signal folder_selected(path: String)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	var editor_versions = populate_available_versions_list()
+	file_dialog.dir_selected.connect(_on_folder_selected)
+	select_root_folder_button.button_down.connect(reselect_root_folder)
+	update_containers();
+
+func reselect_root_folder():
+	Globals.config.set_value("settings","godot_executable_parent", null)
+	Globals.config.save("user://settings.cfg")
+	update_containers();
+
+func update_containers():
+	clear_container(v_project_container)
+	clear_container(v_available_versions_container)
+	var editor_versions = await populate_available_versions_list()
 	populate_project_list(editor_versions)
+
+func clear_container(container: Node) -> void:
+	for child in container.get_children():
+		child.queue_free()
 
 func populate_available_versions_list() -> Dictionary:
 	var editor_versions = {}
-	var editorFolder = get_godot_editor_folder()
+	var editorFolder = await get_godot_editor_folder()
+	selected_folder_label.text = editorFolder
+	print("Scanning for editor versions....")
 	editor_versions = search_for_godot_executables(editorFolder, editor_versions)
-
+	print("\n")
+	print("Populating version list...")
 	# For each editor_version, create a label, set label text, and add label to v_available_versions_container
 	for version_key in editor_versions.keys():
 		var version_info = editor_versions[version_key]
@@ -22,16 +46,15 @@ func populate_available_versions_list() -> Dictionary:
 		var console = version_info.get("console", "")
 		var label_text = version_key
 		if core != "":
-			print(version_key + "[core]: ", core)
+			print(version_key + " [core]:    ", core)
 			label_text += " [core]"
 		if console != "":
-			print(version_key + "[console]: ", console)
+			print(version_key + " [console]: ", console)
 			label_text += " [console]"
 		var label = Label.new()
 		label.text = label_text
 		v_available_versions_container.add_child(label)
-		
-		
+	print("\n\n")
 	return editor_versions
 
 func populate_project_list(editor_versions: Dictionary) -> void:
@@ -63,27 +86,39 @@ func add_project(projectPath: String, editor_versions: Dictionary) -> void:
 	
 	v_project_container.add_child(projectEntry)
 
+func _on_folder_selected(path: String) -> void:
+	# Emit the folder_selected signal with the selected path
+	emit_signal("folder_selected", path)
+
 func get_godot_editor_folder() -> String:
 	# check if selected folder is saved
-	# if not ask for folder to check
+	var saved_folder = Globals.config.get_value("settings", "godot_executable_parent", null)
+	if saved_folder != null:
+		print("Using saved folder: ", saved_folder)
+		return saved_folder
 	
-	# let the user select a root folder
+	# prompt the user to select a root folder
+	print("Enable Folder Selection...")
+	file_dialog.visible = true
+	print("Waiting for selection...")
+	var selection = await (folder_selected)
+	print("Selection: " + selection)
+	
 	# save the selected root folder
-	var executable_path = OS.get_executable_path()
-	var executable_dir = executable_path.get_base_dir()
-	var parent_dir = executable_dir.get_base_dir()
-	
-	return parent_dir
+	Globals.config.set_value("settings","godot_executable_parent", selection)
+	Globals.config.save("user://settings.cfg")
+	print("\n")
+	return selection
 
 # Function to search for Godot executables in a given directory and its subdirectories
 func search_for_godot_executables(parent_dir: String, editor_versions: Dictionary) -> Dictionary:
-	print("opening dir: ", parent_dir)
+	print("Checking: ", parent_dir)
 	var dir = DirAccess.open(parent_dir)
-
+	
 	if dir:
 		dir.list_dir_begin()
 		var file_name = dir.get_next()
-
+	
 		while file_name != "":
 			if dir.current_is_dir():
 				# Recursively search in subdirectories

@@ -23,3 +23,7 @@ Globals="*res://scripts/globals.gd"
 
 window/stretch/mode="viewport"
 window/stretch/aspect="expand"
+
+[rendering]
+
+environment/defaults/default_clear_color=Color(0.211765, 0.239216, 0.290196, 1)

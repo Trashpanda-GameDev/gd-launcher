@@ -2,21 +2,11 @@
 
 [ext_resource type="Script" path="res://scripts/control.gd" id="1_im4cd"]
 [ext_resource type="PackedScene" uid="uid://bt3p8vag86r3i" path="res://scenes/ProjectEntry.tscn" id="1_onqvf"]
+[ext_resource type="Script" path="res://scripts/close_on_launch_button.gd" id="3_emdk8"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_5rddj"]
 line_spacing = 0.0
-font_size = 51
-
-[sub_resource type="GDScript" id="GDScript_jcjqw"]
-script/source = "extends CheckButton
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	toggled.connect(_onToggled)
-
-func _onToggled(event):
-	Globals.closeOnLaunch = event
-"
+font_size = 30
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -40,6 +30,8 @@ grow_horizontal = 2
 size_flags_horizontal = 3
 text = "GD Launcher"
 label_settings = SubResource("LabelSettings_5rddj")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="ProjectsParent" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -88,14 +80,34 @@ layout_mode = 2
 [node name="AvailableVersionsContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.82
+anchor_left = 0.83
 anchor_top = 0.15
-anchor_right = 0.98
+anchor_right = 0.97
 anchor_bottom = 0.9
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="Title Label" type="Label" parent="AvailableVersionsContainer"]
+layout_mode = 2
+theme_type_variation = &"HeaderMedium"
+text = "Selected Folder"
+horizontal_alignment = 1
+
+[node name="SelectedFolderLabel" type="Label" parent="AvailableVersionsContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.439216, 0.729412, 0.980392, 1)
+text = "C://"
+autowrap_mode = 1
+
+[node name="SelectRootFolderButton" type="Button" parent="AvailableVersionsContainer"]
+layout_mode = 2
+text = "Select Godot Root Folder"
+
+[node name="Spacer" type="Label" parent="AvailableVersionsContainer"]
+layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="AvailableVersionsContainer"]
 layout_mode = 2
@@ -104,6 +116,7 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Available Versions"
+horizontal_alignment = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="AvailableVersionsContainer"]
 layout_mode = 2
@@ -123,4 +136,13 @@ offset_left = -168.0
 offset_bottom = 31.0
 grow_horizontal = 0
 text = "close on launch"
-script = SubResource("GDScript_jcjqw")
+script = ExtResource("3_emdk8")
+
+[node name="FileDialog" type="FileDialog" parent="."]
+title = "Open a Directory"
+initial_position = 1
+size = Vector2i(600, 400)
+ok_button_text = "Select Current Folder"
+dialog_hide_on_ok = true
+file_mode = 2
+access = 2
