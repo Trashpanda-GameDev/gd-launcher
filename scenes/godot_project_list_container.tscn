@@ -1,0 +1,48 @@
+[gd_scene load_steps=3 format=3 uid="uid://pltkyw1jqyu8"]
+
+[ext_resource type="Script" path="res://scripts/projects_container.gd" id="1_1cx2x"]
+[ext_resource type="PackedScene" uid="uid://bt3p8vag86r3i" path="res://scenes/ProjectEntry.tscn" id="1_3jkfq"]
+
+[node name="ProjectsParent" type="VBoxContainer"]
+anchors_preset = -1
+anchor_left = 0.02
+anchor_top = 0.15
+anchor_right = 0.8
+anchor_bottom = 0.9
+offset_left = -0.039999
+offset_top = -0.200005
+offset_bottom = -0.200012
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_1cx2x")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Path"
+
+[node name="Label2" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+text = "Version"
+
+[node name="Label3" type="Label" parent="HBoxContainer"]
+custom_minimum_size = Vector2(74.13, 0)
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VProjectContainer" type="VBoxContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" parent="ScrollContainer/VProjectContainer" instance=ExtResource("1_3jkfq")]
+visible = false
+layout_mode = 2

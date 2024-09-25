@@ -1,8 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://b6oxhj62t4x63"]
+[gd_scene load_steps=7 format=3 uid="uid://b6oxhj62t4x63"]
 
-[ext_resource type="Script" path="res://scripts/control.gd" id="1_im4cd"]
 [ext_resource type="PackedScene" uid="uid://bt3p8vag86r3i" path="res://scenes/ProjectEntry.tscn" id="1_onqvf"]
 [ext_resource type="Script" path="res://scripts/close_on_launch_button.gd" id="3_emdk8"]
+[ext_resource type="PackedScene" uid="uid://pltkyw1jqyu8" path="res://scenes/godot_project_list_container.tscn" id="3_gvtk2"]
+[ext_resource type="PackedScene" uid="uid://cn7o5nj0c5ac6" path="res://scenes/godot_version_list_container.tscn" id="3_hcbyc"]
+[ext_resource type="PackedScene" uid="uid://b2t6jy87kmln4" path="res://scenes/version_label.tscn" id="4_clxni"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_5rddj"]
 line_spacing = 0.0
@@ -15,8 +17,15 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_im4cd")
-projectNode = ExtResource("1_onqvf")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.211765, 0.239216, 0.290196, 1)
 
 [node name="ProjectTitle" type="Label" parent="."]
 layout_mode = 1
@@ -33,99 +42,48 @@ label_settings = SubResource("LabelSettings_5rddj")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ProjectsParent" type="VBoxContainer" parent="."]
+[node name="Project list background" type="ColorRect" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.02
 anchor_top = 0.15
 anchor_right = 0.8
-anchor_bottom = 0.9
-offset_left = -0.039999
-offset_top = -0.200005
-offset_bottom = -0.200012
+anchor_bottom = 0.94
+color = Color(0.145098, 0.168627, 0.203922, 1)
+
+[node name="ColorRect" type="ColorRect" parent="Project list background"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_right = -6.10352e-05
+offset_bottom = 21.95
 grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
+color = Color(0.25098, 0.266667, 0.298039, 1)
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ProjectsParent"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="ProjectsParent/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Path"
-
-[node name="Label2" type="Label" parent="ProjectsParent/HBoxContainer"]
-layout_mode = 2
-text = "Version"
-
-[node name="Label3" type="Label" parent="ProjectsParent/HBoxContainer"]
-custom_minimum_size = Vector2(74.13, 0)
-layout_mode = 2
-
-[node name="ScrollContainer" type="ScrollContainer" parent="ProjectsParent"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="VProjectContainer" type="VBoxContainer" parent="ProjectsParent/ScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="HBoxContainer" parent="ProjectsParent/ScrollContainer/VProjectContainer" instance=ExtResource("1_onqvf")]
-visible = false
-layout_mode = 2
-
-[node name="AvailableVersionsContainer" type="VBoxContainer" parent="."]
+[node name="Version list background" type="ColorRect" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.83
+anchor_left = 0.813
 anchor_top = 0.15
-anchor_right = 0.97
-anchor_bottom = 0.9
+anchor_right = 0.986
+anchor_bottom = 0.94
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
+color = Color(0.145098, 0.168627, 0.203922, 1)
+metadata/_edit_use_anchors_ = true
 
-[node name="Title Label" type="Label" parent="AvailableVersionsContainer"]
-layout_mode = 2
-theme_type_variation = &"HeaderMedium"
-text = "Selected Folder"
-horizontal_alignment = 1
+[node name="ProjectsParent" parent="." instance=ExtResource("3_gvtk2")]
+layout_mode = 1
+anchor_bottom = 0.94
+offset_left = 0.0
+offset_top = 0.0
+grow_horizontal = 1
+grow_vertical = 1
+projectNode = ExtResource("1_onqvf")
 
-[node name="SelectedFolderLabel" type="Label" parent="AvailableVersionsContainer"]
-custom_minimum_size = Vector2(0, 20)
-layout_mode = 2
-theme_override_colors/font_color = Color(0.439216, 0.729412, 0.980392, 1)
-text = "C://"
-autowrap_mode = 1
-
-[node name="SelectRootFolderButton" type="Button" parent="AvailableVersionsContainer"]
-layout_mode = 2
-text = "Select Godot Root Folder"
-
-[node name="Spacer" type="Label" parent="AvailableVersionsContainer"]
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="AvailableVersionsContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="AvailableVersionsContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Available Versions"
-horizontal_alignment = 1
-
-[node name="ScrollContainer" type="ScrollContainer" parent="AvailableVersionsContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="VAvailableVersionsContainer" type="VBoxContainer" parent="AvailableVersionsContainer/ScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
+[node name="AvailableVersionsContainer" parent="." instance=ExtResource("3_hcbyc")]
+layout_mode = 1
+anchor_bottom = 0.938
 
 [node name="CheckButton" type="CheckButton" parent="."]
 layout_mode = 1
@@ -138,11 +96,6 @@ grow_horizontal = 0
 text = "close on launch"
 script = ExtResource("3_emdk8")
 
-[node name="FileDialog" type="FileDialog" parent="."]
-title = "Open a Directory"
-initial_position = 1
-size = Vector2i(600, 400)
-ok_button_text = "Select Current Folder"
-dialog_hide_on_ok = true
-file_mode = 2
-access = 2
+[node name="VersionLabel" parent="." instance=ExtResource("4_clxni")]
+layout_mode = 1
+text = "version tag"

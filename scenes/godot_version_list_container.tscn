@@ -1,0 +1,86 @@
+[gd_scene load_steps=2 format=3 uid="uid://cn7o5nj0c5ac6"]
+
+[ext_resource type="Script" path="res://scripts/versions_container.gd" id="1_elqmr"]
+
+[node name="AvailableVersionsContainer" type="VBoxContainer"]
+anchors_preset = -1
+anchor_left = 0.814
+anchor_top = 0.15
+anchor_right = 0.986
+anchor_bottom = 0.9
+offset_left = 18.4319
+offset_right = -18.432
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_elqmr")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Title Label" type="Label" parent="VBoxContainer"]
+z_index = 2
+layout_mode = 2
+size_flags_vertical = 1
+theme_type_variation = &"HeaderMedium"
+text = "Selected Folder"
+horizontal_alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer/Title Label"]
+z_index = -1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.25098, 0.266667, 0.298039, 1)
+
+[node name="SelectedFolderLabel" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.439216, 0.729412, 0.980392, 1)
+text = "C://"
+autowrap_mode = 1
+
+[node name="SelectRootFolderButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Select Godot Root Folder"
+
+[node name="Spacer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Available Versions"
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VAvailableVersionsContainer" type="VBoxContainer" parent="VBoxContainer2/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="FileDialog" type="FileDialog" parent="."]
+auto_translate_mode = 1
+title = "Open a Directory"
+initial_position = 1
+size = Vector2i(600, 400)
+ok_button_text = "Select Current Folder"
+dialog_hide_on_ok = true
+file_mode = 2
+access = 2

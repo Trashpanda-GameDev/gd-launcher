@@ -10,7 +10,8 @@ config_version=5
 
 [application]
 
-config/name="Godot Hub"
+config/name="Godot Launcher"
+config/version="0.0.1-beta"
 run/main_scene="res://scenes/control.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
@@ -23,7 +24,3 @@ Globals="*res://scripts/globals.gd"
 
 window/stretch/mode="viewport"
 window/stretch/aspect="expand"
-
-[rendering]
-
-environment/defaults/default_clear_color=Color(0.211765, 0.239216, 0.290196, 1)
