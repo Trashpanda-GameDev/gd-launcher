@@ -30,7 +30,8 @@ func add_project(projectPath: String, editor_versions: Dictionary) -> void:
 	var name = extract_project_name(fileContents)
 	var version = extract_version_number(fileContents)
 	
-	if (version == "Unknown"):
+	# check if version exists
+	if (!editor_versions.has(version)):
 		projectEntry.buttonDisabled = true;
 	
 	projectEntry.nameText = name

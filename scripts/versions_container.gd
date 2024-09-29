@@ -89,7 +89,7 @@ func search_for_godot_executables(parent_dir: String, editor_versions: Dictionar
 				# Recursively search in subdirectories
 				var sub_dir = parent_dir.path_join(file_name)
 				editor_versions = search_for_godot_executables(sub_dir, editor_versions)
-			elif is_godot_executable(file_name):
+			elif is_godot_executable(parent_dir.path_join(file_name)):
 				# Process the Godot executable file
 				editor_versions = process_godot_executable(parent_dir, file_name, editor_versions)
 	
@@ -100,29 +100,96 @@ func search_for_godot_executables(parent_dir: String, editor_versions: Dictionar
 	return editor_versions
 
 # Helper function to check if a file is a Godot executable
-func is_godot_executable(file_name: String) -> bool:
-	return file_name.to_lower().begins_with("godot") and file_name.to_lower().ends_with(".exe")
+func is_godot_executable(file_path: String) -> bool:
+	var isEXE = file_path.to_lower().ends_with(".exe")
+	if(!isEXE):
+		return false;
+	
+	var productName: String = get_exe_properties(file_path)["product_name"]
+	var containsGodot = productName.containsn("godot")
+	return containsGodot
+
+func get_exe_properties(exe_path: String):
+	var output = []
+	var error = []
+	
+	# Get Product Version
+	var version_command = "(Get-Item '"+exe_path+"').VersionInfo.ProductVersion"
+	var version_exit_code = OS.execute("powershell.exe", ["-Command", version_command], output, true)
+	
+	if version_exit_code != 0:
+		print("Error fetching product version: ", error)
+		return
+	
+	var product_version = output[0].strip_edges()
+	
+	# Get Product Name
+	output.clear()
+	var name_command = "(Get-Item '"+exe_path+"').VersionInfo.ProductName"
+	var name_exit_code = OS.execute("powershell.exe", ["-Command", name_command], output, true)
+	
+	if name_exit_code != 0:
+		print("Error fetching product name: ", error)
+		return
+	
+	var product_name = output[0].strip_edges()
+	
+	output.clear()
+	var description_command = "(Get-Item '"+exe_path+"').VersionInfo.FileDescription"
+	var desc_exit_code = OS.execute("powershell.exe", ["-Command", description_command], output, true)
+	
+	if desc_exit_code != 0:
+		print("Error fetching product name: ", error)
+		return
+	
+	var product_description = output[0].strip_edges()
+	
+	output.clear()
+	var file_version_command = "(Get-Item '"+exe_path+"').VersionInfo.FileVersion"
+	var file_version_exit_code = OS.execute("powershell.exe", ["-Command", file_version_command], output, true)
+	
+	if desc_exit_code != 0:
+		print("Error fetching product name: ", error)
+		return
+	
+	var product_file_version = output[0].strip_edges()
+	
+	#print("Product Description: ", product_description)
+	#print("Product Name: ", product_name)
+	#print("Product Version: ", product_version)
+	#print("Product File Version: ", product_file_version)
+	
+	return {
+		"product_description": product_description,
+		"product_name": product_name,
+		"product_version": product_version,
+		"product_file_version": product_file_version
+	}
+
 
 func process_godot_executable(parent_dir: String, file_name: String, editor_versions: Dictionary) -> Dictionary:
-	var version = get_godot_version(file_name)
-	var version_key = version.split("-")[0]  # Extract the version number without the suffix
 	
-	if not editor_versions.has(version_key):
-		editor_versions[version_key] = {}
+	var properties = get_exe_properties(parent_dir.path_join(file_name));
 	
-	if file_name.to_lower().find("console") != -1:
-		editor_versions[version_key]["console"] = parent_dir.path_join(file_name)
+	var version = properties["product_file_version"] # get_godot_version(file_name)
+	var version_key = version # version.split("-")[0]  # Extract the version number without the suffix
+	
+	if not editor_versions.has(version):
+		editor_versions[version] = {}
+	
+	if properties["product_name"].to_lower().find("console") != -1:
+		editor_versions[version]["console"] = parent_dir.path_join(file_name)
 	else:
-		editor_versions[version_key]["core"] = parent_dir.path_join(file_name)
+		editor_versions[version]["core"] = parent_dir.path_join(file_name)
 	
 	return editor_versions
 
 func get_godot_version(file_name: String) -> String:
 	# Extract version from the file name
 	var version_regex = RegEx.new()
-	version_regex.compile("v(\\d+\\.\\d+)-")
+	version_regex.compile("\\d+(?:\\.\\d+)+")
 	var match = version_regex.search(file_name)
 	if match:
-		return match.get_string(1)  # Extract the version number without "v" and "-"
+		return match.get_string()  # Extract the version number without "v" and "-"
 	else:
 		return "Unknown"
