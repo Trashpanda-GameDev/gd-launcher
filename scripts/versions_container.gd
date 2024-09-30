@@ -105,74 +105,50 @@ func is_godot_executable(file_path: String) -> bool:
 	if(!isEXE):
 		return false;
 	
-	var productName: String = get_exe_properties(file_path)["product_name"]
+	var props = get_exe_properties(file_path);
+	if(!props):
+		return false;
+	
+	var productName = props["product_name"]
+	if(!productName):
+		return false;
 	var containsGodot = productName.containsn("godot")
 	return containsGodot
 
-func get_exe_properties(exe_path: String):
+func get_exe_properties(exe_path: String) -> Dictionary:
 	var output = []
 	var error = []
 	
-	# Get Product Version
-	var version_command = "(Get-Item '"+exe_path+"').VersionInfo.ProductVersion"
-	var version_exit_code = OS.execute("powershell.exe", ["-Command", version_command], output, true)
+	var script = "$exe = Get-Item '" + exe_path + "'; "
+	script += "$properties = @{"
+	script += "product_version = $exe.VersionInfo.ProductVersion; "
+	script += "product_name = $exe.VersionInfo.ProductName; "
+	script += "product_description = $exe.VersionInfo.FileDescription; "
+	script += "product_file_version = $exe.VersionInfo.FileVersion}; "
+	script += "$properties | ConvertTo-Json"
 	
-	if version_exit_code != 0:
-		print("Error fetching product version: ", error)
-		return
+	var exit_code = OS.execute("powershell.exe", ["-Command", script], output, true)
 	
-	var product_version = output[0].strip_edges()
+	if exit_code != 0:
+		print("Error fetching properties: ", error)
+		return {}
 	
-	# Get Product Name
-	output.clear()
-	var name_command = "(Get-Item '"+exe_path+"').VersionInfo.ProductName"
-	var name_exit_code = OS.execute("powershell.exe", ["-Command", name_command], output, true)
+	var json_string = ""
+	for line in output:
+		json_string += line
 	
-	if name_exit_code != 0:
-		print("Error fetching product name: ", error)
-		return
+	var json = JSON.parse_string(json_string)
+	if json == null:
+		print("Error parsing JSON output: ", output)
+		return {}
 	
-	var product_name = output[0].strip_edges()
-	
-	output.clear()
-	var description_command = "(Get-Item '"+exe_path+"').VersionInfo.FileDescription"
-	var desc_exit_code = OS.execute("powershell.exe", ["-Command", description_command], output, true)
-	
-	if desc_exit_code != 0:
-		print("Error fetching product name: ", error)
-		return
-	
-	var product_description = output[0].strip_edges()
-	
-	output.clear()
-	var file_version_command = "(Get-Item '"+exe_path+"').VersionInfo.FileVersion"
-	var file_version_exit_code = OS.execute("powershell.exe", ["-Command", file_version_command], output, true)
-	
-	if desc_exit_code != 0:
-		print("Error fetching product name: ", error)
-		return
-	
-	var product_file_version = output[0].strip_edges()
-	
-	#print("Product Description: ", product_description)
-	#print("Product Name: ", product_name)
-	#print("Product Version: ", product_version)
-	#print("Product File Version: ", product_file_version)
-	
-	return {
-		"product_description": product_description,
-		"product_name": product_name,
-		"product_version": product_version,
-		"product_file_version": product_file_version
-	}
-
+	return json
 
 func process_godot_executable(parent_dir: String, file_name: String, editor_versions: Dictionary) -> Dictionary:
 	
 	var properties = get_exe_properties(parent_dir.path_join(file_name));
 	
-	var version = properties["product_file_version"] # get_godot_version(file_name)
-	var version_key = version # version.split("-")[0]  # Extract the version number without the suffix
+	var version = get_godot_version(properties["product_file_version"])
 	
 	if not editor_versions.has(version):
 		editor_versions[version] = {}
