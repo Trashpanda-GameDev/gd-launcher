@@ -29,7 +29,8 @@ func clear_container(container: Node) -> void:
 
 func populate_available_versions_list() -> Dictionary:
 	var editor_versions = {}
-	var editorFolder = await get_godot_editor_folder()
+
+var editorFolder = await get_godot_editor_folder()
 	selected_folder_label.text = editorFolder
 	print("Scanning for editor versions....")
 	editor_versions = search_for_godot_executables(editorFolder, editor_versions)
@@ -120,9 +121,6 @@ func process_godot_executable(parent_dir: String, file_name: String, editor_vers
 func get_godot_version(file_name: String) -> String:
 	# Extract version from the file name
 	var version_regex = RegEx.new()
-	version_regex.compile("v(\\d+\\.\\d+)-")
-	var match = version_regex.search(file_name)
-	if match:
-		return match.get_string(1)  # Extract the version number without "v" and "-"
-	else:
-		return "Unknown"
+	
+    version_regex.compile("(\\d+(?:\\.\\d+)+)")
+    var match = version_regex.search(file_name)
