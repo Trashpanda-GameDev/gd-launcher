@@ -101,9 +101,10 @@ func search_for_godot_executables(parent_dir: String, editor_versions: Dictionar
 
 # Helper function to check if a file is a Godot executable
 func is_godot_executable(file_name: String) -> bool:
-	return file_name.to_lower().begins_with("godot") and file_name.to_lower().ends_with(".exe")
+	        var lower = file_name.to_lower()
+        return lower.begins_with("godot") and (lower.ends_with(".exe") or lower.ends_with(".app"))
 
-func process_godot_executable(parent_dir: String, file_name: String, editor_versions: Dictionary) -> Dictionary:
+
 	var version = get_godot_version(file_name)
 	var version_key = version.split("-")[0]  # Extract the version number without the suffix
 	
