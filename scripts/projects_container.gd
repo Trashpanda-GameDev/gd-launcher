@@ -84,11 +84,11 @@ func get_godot_projects_file_contents() -> String:
 func get_godot_config_path() -> String:
 	match OS.get_name():
 		"Windows":
-			return OS.get_environment("APPDATA").path_join("Godot")
+	            return OS.get_environment("HOME").path_join(".config/godot")
 		"Linux", "BSD":
 			return "" # OS.get_environment("HOME").path_join(".config/godot")
 		"OSX":
-			return "" # OS.get_environment("HOME").path_join("Library/Application Support/Godot")
+	            return OS.get_environment("HOME").path_join("Library/Application Support/Godot")
 	return ""
 
 func parse_project_paths(config_string: String) -> Array:
